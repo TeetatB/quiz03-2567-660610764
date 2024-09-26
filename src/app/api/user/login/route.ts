@@ -21,10 +21,12 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
+  const secret = process.env.JWT_SECRET || "This is another secret"
+
   const token = jwt.sign(
-    {username: username, password: password, role:user.role},
-    { expiresIn: "8h" }
-  );
+    {username: username, password: password, role: user.role},
+    secret,
+    {expiresIn: "8h"});
 
   return NextResponse.json({ ok: true, token });
 };
