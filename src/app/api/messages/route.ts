@@ -100,15 +100,17 @@ export const DELETE = async (request: NextRequest) => {
       { status: 404 }
     );
   }
-  
-  (<Database>DB).messages.filter(
-    (x)=>(x.messageId === messageId && x.messageText === messageText && x.roomId === roomId)
-  );
 
-  writeDB();
+  if(payload && checkmessage){
+    (<Database>DB).messages.filter(
+      (x)=>(x.messageId === messageId && x.messageText === messageText && x.roomId === roomId)
+    );
+    writeDB();
 
-  return NextResponse.json({
-    ok: true,
-    message: "Message has been deleted",
-  });
+    return NextResponse.json({
+      ok: true,
+      message: "Message has been deleted",
+    });
+  }
+
 };

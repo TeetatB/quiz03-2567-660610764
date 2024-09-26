@@ -8,10 +8,10 @@ export const POST = async (request: NextRequest) => {
   readDB();
   const body = await request.json();
   const {username, password} = body;
-  const usercheck = (<Database>DB).users.find(
+  const user = (<Database>DB).users.find(
     (x)=>(x.username === username || x.password === password)
   );
-  if(!usercheck){
+  if(!user){
     return NextResponse.json(
       {
         ok: false,
@@ -21,7 +21,10 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const token = "Replace this with token creation";
+  const token = jwt.sign(
+    {username: username, password:password, role:user.role},
+    { expiresIn: "8h" }
+  );
 
   return NextResponse.json({ ok: true, token });
 };
